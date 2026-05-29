@@ -83,13 +83,13 @@
                 <div class="z-10">
                     <div class="flex items-baseline gap-5 flex-wrap">
                         <h2 class="text-2xl font-bold text-zinc-900 tracking-tight">김현아</h2>
-                        <a href="tel:010-3423-9059" onclick="event.stopPropagation()" class="text-lg sm:text-xl font-normal text-[#4a3525] hover:text-[#2f2117] transition-colors tracking-tight relative z-20">
+                        <a href="tel:010-3423-9059" data-extlink class="text-lg sm:text-xl font-normal text-[#4a3525] hover:text-[#2f2117] transition-colors tracking-tight relative z-20" style="touch-action: manipulation;">
                             010-3423-9059
                         </a>
                     </div>
                     <div class="mt-1.5 flex items-center gap-2 flex-wrap text-xs sm:text-sm text-stone-500 font-medium tracking-wide">
                         <span>베이킹 클래스 강사</span>
-                        <a href="https://www.instagram.com/cafe_calling_/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="inline-flex items-center gap-1 hover:opacity-80 transition-opacity relative z-20">
+                        <a href="https://www.instagram.com/cafe_calling_/" rel="noopener noreferrer" data-extlink class="inline-flex items-center gap-1 hover:opacity-80 transition-opacity relative z-20" style="touch-action: manipulation;">
                             <span class="w-5 h-5 rounded-md flex items-center justify-center" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);">
                                 <svg class="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
@@ -126,7 +126,7 @@
                                 <path d="M9 20v-6h6v6"/>
                             </svg>
                         </div>
-                        <a href="https://smartstore.naver.com/thecalling" target="_blank" class="hover:text-stone-900 transition-colors truncate block relative z-20" onclick="event.stopPropagation()">
+                        <a href="https://smartstore.naver.com/thecalling" rel="noopener noreferrer" data-extlink class="hover:text-stone-900 transition-colors truncate block relative z-20" style="touch-action: manipulation;">
                             smartstore.naver.com/thecalling
                         </a>
                     </div>
@@ -144,9 +144,18 @@
     <script>
         function toggleCard(e) {
             if (e && e.target && e.target.closest && e.target.closest('a')) return;
-            const cardInner = document.getElementById('cardInner');
-            cardInner.classList.toggle('rotate-y-180');
+            document.getElementById('cardInner').classList.toggle('rotate-y-180');
         }
+
+        // 외부 링크: 카드 뒤집기 핸들러와 충돌 없이 강제로 네비게이션
+        document.querySelectorAll('a[data-extlink]').forEach(function(a) {
+            a.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (a.href.startsWith('tel:')) return; // 전화는 기본 동작 유지
+                e.preventDefault();
+                window.location.href = a.href;
+            });
+        });
     </script>
 
 </body>
