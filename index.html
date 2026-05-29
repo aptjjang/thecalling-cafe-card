@@ -93,7 +93,7 @@
                             <span class="text-stone-300">|</span>
                             <span class="text-zinc-700">cafe_calling_</span>
                         </div>
-                        <a href="https://www.instagram.com/cafe_calling_/" rel="noopener noreferrer" data-extlink aria-label="인스타그램 cafe_calling_" onclick="event.stopPropagation(); event.preventDefault(); window.location.assign('https://www.instagram.com/cafe_calling_/'); return false;" class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-md hover:scale-105 active:scale-95 transition-transform relative z-20 cursor-pointer" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); touch-action: manipulation;">
+                        <a href="https://www.instagram.com/cafe_calling_/" rel="noopener noreferrer" aria-label="인스타그램 cafe_calling_" onclick="event.stopPropagation(); event.preventDefault(); openInsta(); return false;" class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-md hover:scale-105 active:scale-95 transition-transform relative z-20 cursor-pointer" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); touch-action: manipulation;">
                             <svg class="w-6 h-6 text-white pointer-events-none" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
                             </svg>
@@ -146,6 +146,25 @@
         function toggleCard(e) {
             if (e && e.target && e.target.closest && e.target.closest('a')) return;
             document.getElementById('cardInner').classList.toggle('rotate-y-180');
+        }
+
+        // 인스타: 1순위 계정 프로필, 실패/막힘 시 게시물 URL로 자동 폴백
+        function openInsta() {
+            var profileUrl = 'https://www.instagram.com/cafe_calling_/';
+            var fallbackUrl = 'https://www.instagram.com/p/DY1bvFkkuV-/';
+            var origHref = window.location.href;
+            try {
+                window.location.assign(profileUrl);
+            } catch (err) {
+                window.location.assign(fallbackUrl);
+                return;
+            }
+            // 1.5초 후에도 같은 페이지에 머물러 있으면 (네비게이션 막힘) 폴백 URL로 재시도
+            setTimeout(function () {
+                if (window.location.href === origHref) {
+                    window.location.assign(fallbackUrl);
+                }
+            }, 1500);
         }
 
         // 외부 링크: 카드 뒤집기 핸들러와 충돌 없이 강제로 네비게이션
